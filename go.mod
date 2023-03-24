@@ -1,4 +1,4 @@
-module github.com/maxyurk/gomergexml
+module github.com/maxyurk/go-xml-patch
 
 go 1.20
 
