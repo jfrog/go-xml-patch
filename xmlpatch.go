@@ -40,21 +40,25 @@ func Patch(docData, xmlDiffData []byte) ([]byte, error) {
 		attributeRefIndex := strings.LastIndex(xpath, "/@")
 		if attributeRefIndex != -1 {
 			xpath = xpath[:attributeRefIndex]
-			fmt.Printf("\n\n--\n\nnew xpath: %v\n\n--\n\n", xpath)
 		}
 		path, err := etree.CompilePath(xpath)
 		if err != nil {
 			return nil, fmt.Errorf("failed to compile sel value of diff replace entry #%v. Sel value: '%v'. Error: %w", i, xpath, err)
 		}
 		elems := doc.FindElementsPath(path)
-		if len(elems) != 1 {
-			return nil, fmt.Errorf("expected 1 match for '%v' bot got %v", xpath, len(elems))
-		}
-		elem := elems[0]
-		if attributeRefIndex != -1 {
-			elem.CreateAttr(replace.Sel[attributeRefIndex+2:], replace.Text)
-		} else {
-			elem.SetText(replace.Text) // TODO [Max]: test
+		switch len(elems) {
+		case 0:
+			// TODO [Max]: add ?
+			return nil, fmt.Errorf("expected 1 match for '%v', got 0", xpath)
+		case 1:
+			elem := elems[0]
+			if attributeRefIndex != -1 {
+				elem.CreateAttr(replace.Sel[attributeRefIndex+2:], replace.Text)
+			} else {
+				elem.SetText(replace.Text) // TODO [Max]: test
+			}
+		default:
+			return nil, fmt.Errorf("expected 1 match for '%v', got %v", xpath, len(elems))
 		}
 	}
 	return doc.WriteToBytes()
