@@ -1,4 +1,4 @@
-module github.com/maxyurk/go-xml-patch
+module github.com/jfrog/go-xml-patch
 
 go 1.20
 
