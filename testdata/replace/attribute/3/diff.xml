@@ -1,0 +1,3 @@
+<diff>
+    <replace sel="/project/component[@name='GOROOT']/@url">file://$PROJECT_DIR$/.ting/bin/go</replace>
+</diff>

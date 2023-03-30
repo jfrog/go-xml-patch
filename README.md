@@ -79,7 +79,7 @@ func main() {
     - [ ] 4.3.3. Adding a Prefixed Namespace Declaration
     - [ ] 4.3.4. Adding Node(s) with the 'pos' Attribute
     - [ ] 4.3.5. Adding Multiple Nodes
-- [ ] 4.4. `<replace>` Element
+- [ ] 4.4. `<replace>` Element (with optional auto-create, see [#2](https://github.com/jfrog/go-xml-patch/issues/2))
     - [ ] 4.4.1. Replacing an Element
     - [x] 4.4.2. Replacing an Attribute Value
     - [ ] 4.4.3. Replacing a Namespace Declaration URI
@@ -100,3 +100,9 @@ func main() {
 - [ ] Release flow
 - [ ] better docs
 - [ ] coverage
+
+# Release
+
+(manual for now)
+
+Follow [Go module publishing instructions](https://go.dev/doc/modules/publishing) and then create a new [Github release](https://go.dev/doc/modules/publishing).

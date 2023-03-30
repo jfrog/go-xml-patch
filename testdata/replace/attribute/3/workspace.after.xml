@@ -3,6 +3,6 @@
     <component name="AutoImportSettings">
         <option name="autoReloadType" value="SELECTIVE"/>
     </component>
-    <component name="GOROOT" url="file://$PROJECT_DIR$/.ting/bin/go"/>
     <component name="SpellCheckerSettings" RuntimeDictionaries="0"/>
+    <component name="GOROOT" url="file://$PROJECT_DIR$/.ting/bin/go"/>
 </project>

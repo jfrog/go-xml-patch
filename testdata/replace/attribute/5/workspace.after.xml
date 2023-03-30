@@ -1,0 +1,5 @@
+<project version="4">
+    <component name="GOROOT">
+        <inner url="file://$PROJECT_DIR$/.ting/bin/go"/>
+    </component>
+</project>
