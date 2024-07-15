@@ -1,0 +1,11 @@
+<diff>
+    <add sel="domain/devices">
+        <interface type="added">
+            <mac address="mac3"/>
+            <source bridge="br-int"/>
+            <virtualport type="openvswitch"/>
+            <target dev="dev3"/>
+            <model type="virtio"/>
+        </interface>
+    </add>
+</diff>

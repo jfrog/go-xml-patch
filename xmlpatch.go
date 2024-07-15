@@ -15,14 +15,16 @@ type Diff struct {
 }
 
 type Replace struct {
-	Sel  string `xml:"sel,attr"`
-	Text string `xml:",chardata"`
+	Sel     string `xml:"sel,attr"`
+	Text    string `xml:",chardata"`
+	Content []byte `xml:",innerxml"`
 }
 
 type Add struct {
-	Pos     string `xml:"pos,attr"`
-	Sel     string `xml:"sel,attr"`
-	Content []byte `xml:",innerxml"`
+	Pos       string `xml:"pos,attr"`
+	Sel       string `xml:"sel,attr"`
+	RejectSel string `xml:"rejectsel,attr"`
+	Content   []byte `xml:",innerxml"`
 }
 
 type Ops int
@@ -47,8 +49,45 @@ func Patch(docData, xmlDiffData []byte, options ...Ops) ([]byte, error) {
 			return nil, err
 		}
 	}
+
+	for i, add := range diff.Adds {
+		if err := doAdd(add, i, doc); err != nil {
+			return nil, err
+		}
+	}
+
 	doc.Indent(4)
 	return doc.WriteToBytes()
+}
+
+func doAdd(add Add, i int, doc *etree.Document) error {
+	if add.RejectSel != "" {
+		uniqPath, err := etree.CompilePath(add.RejectSel)
+		if err != nil {
+			return fmt.Errorf("compile sel value %q of add diff entry #%d: %w", add.Sel, i, err)
+		}
+
+		exists := doc.FindElementPath(uniqPath)
+		if exists != nil {
+			return nil
+		}
+	}
+
+	newDoc := etree.NewDocument()
+	if err := newDoc.ReadFromBytes(add.Content); err != nil {
+		return fmt.Errorf("read content of add diff entry #%d. Sel value: '%v'. Error: %w", i, add.Sel, err)
+	}
+
+	path, err := etree.CompilePath(add.Sel)
+	if err != nil {
+		return fmt.Errorf("compile sel value %q of add diff entry #%d: %w", add.Sel, i, err)
+	}
+
+	elem := doc.FindElementPath(path)
+
+	elem.AddChild(newDoc.Root())
+
+	return nil
 }
 
 func doReplace(replace Replace, i int, doc *etree.Document, options []Ops) error {
@@ -69,22 +108,42 @@ func doReplace(replace Replace, i int, doc *etree.Document, options []Ops) error
 		}
 		createMissing(doc, xpath)
 		elem := doc.FindElement(xpath)
-		doPatch(attributeRefIndex, elem, replace)
+		if err := doPatch(attributeRefIndex, elem, replace); err != nil {
+			return fmt.Errorf("do patch: %w", err)
+		}
 	case 1:
-		elem := elems[0]
-		doPatch(attributeRefIndex, elem, replace)
+		if err := doPatch(attributeRefIndex, elems[0], replace); err != nil {
+			return fmt.Errorf("do patch: %w", err)
+		}
+
 	default:
 		return fmt.Errorf("expected 1 match for '%v', got %v", xpath, len(elems))
 	}
+
 	return nil
 }
 
-func doPatch(attributeRefIndex int, elem *etree.Element, replace Replace) {
+func doPatch(attributeRefIndex int, elem *etree.Element, replace Replace) error {
 	if attributeRefIndex != -1 {
 		elem.CreateAttr(replace.Sel[attributeRefIndex+2:], replace.Text)
 	} else {
-		elem.SetText(replace.Text) // TODO [Max]: test
+		if len(replace.Text) > 0 {
+			elem.SetText(replace.Text) // TODO [Max]: test
+		}
+		if len(replace.Content) > 0 {
+			newDoc := etree.NewDocument()
+			err := newDoc.ReadFromBytes(replace.Content)
+			if err != nil {
+				return fmt.Errorf("read replace content: %w\n", err)
+			}
+
+			elem.Parent().InsertChildAt(elem.Index(), newDoc.Root())
+
+			elem.Parent().RemoveChild(elem)
+		}
 	}
+
+	return nil
 }
 
 func createMissing(doc *etree.Document, xpath string) {

@@ -74,6 +74,27 @@ func TestPatch(t *testing.T) {
 			expectedFilepath:    "testdata/replace/attribute/3/workspace.after.xml",
 			wantErr:             true,
 		},
+		{
+			name:                "replace element",
+			docDataFilepath:     "testdata/replace/element/1/domain.before.xml",
+			xmlDiffDataFilepath: "testdata/replace/element/1/diff.xml",
+			expectedFilepath:    "testdata/replace/element/1/domain.after.xml",
+			wantErr:             false,
+		},
+		{
+			name:                "add element",
+			docDataFilepath:     "testdata/add/element/1/domain.before.xml",
+			xmlDiffDataFilepath: "testdata/add/element/1/diff.xml",
+			expectedFilepath:    "testdata/add/element/1/domain.after.xml",
+			wantErr:             false,
+		},
+		{
+			name:                "add duplicated element",
+			docDataFilepath:     "testdata/add/element/2/domain.before.xml",
+			xmlDiffDataFilepath: "testdata/add/element/2/diff.xml",
+			expectedFilepath:    "testdata/add/element/2/domain.after.xml",
+			wantErr:             false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -1,10 +1,10 @@
 module github.com/jfrog/go-xml-patch
 
-go 1.20
+go 1.22
 
 require (
-	github.com/beevik/etree v1.1.0
-	github.com/stretchr/testify v1.8.2
+	github.com/beevik/etree v1.4.0
+	github.com/stretchr/testify v1.8.4
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 )
 
