@@ -1,0 +1,11 @@
+<diff>
+    <add sel="domain/devices" rejectsel="//interface/mac[@address='mac2']">
+        <interface type="added">
+            <mac address="mac2"/>
+            <source bridge="br-int"/>
+            <virtualport type="openvswitch"/>
+            <target dev="dev2"/>
+            <model type="virtio"/>
+        </interface>
+    </add>
+</diff>

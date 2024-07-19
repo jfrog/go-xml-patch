@@ -13,7 +13,7 @@ This library is still in early stage. API may break. Missing functionality (see 
 ### Install
 
 ```shell
-go get github.com/maxyurk/go-xml-patch
+go get github.com/jfrog/go-xml-patch
 ```
 
 ### Code
@@ -23,7 +23,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/maxyurk/go-xml-patch"
+	"github.com/jfrog/go-xml-patch"
 	"os"
 )
 
@@ -74,13 +74,13 @@ func main() {
 ### [Specification](https://www.rfc-editor.org/rfc/rfc5261) Items
 
 - [ ] 4.3. `<add>` Element
-    - [ ] 4.3.1. Adding an Element
+    - [x] 4.3.1. Adding an Element
     - [ ] 4.3.2. Adding an Attribute
     - [ ] 4.3.3. Adding a Prefixed Namespace Declaration
     - [ ] 4.3.4. Adding Node(s) with the 'pos' Attribute
     - [ ] 4.3.5. Adding Multiple Nodes
 - [ ] 4.4. `<replace>` Element (with optional auto-create, see [#2](https://github.com/jfrog/go-xml-patch/issues/2))
-    - [ ] 4.4.1. Replacing an Element
+    - [x] 4.4.1. Replacing an Element
     - [x] 4.4.2. Replacing an Attribute Value
     - [ ] 4.4.3. Replacing a Namespace Declaration URI
     - [ ] 4.4.4. Replacing a Comment Node

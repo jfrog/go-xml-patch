@@ -1,0 +1,22 @@
+<domain type="kvm" id="98" xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0">
+    <devices>
+        <interface type="replaced">
+            <mac address="52:54:00:31:3d:3e"/>
+            <source bridge="br-int"/>
+            <virtualport type="openvswitch"/>
+            <target dev="dev3"/>
+            <model type="virtio"/>
+        </interface>
+        <interface type="bridge">
+            <mac address="52:54:00:31:3d:3d"/>
+            <source bridge="br-int"/>
+            <virtualport type="openvswitch">
+                <parameters interfaceid="01fb70b1-6df4-4786-aa08-e5e9427662f0"/>
+            </virtualport>
+            <target dev="dev2"/>
+            <model type="virtio"/>
+            <alias name="net0"/>
+            <address type="pci" domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
+        </interface>
+    </devices>
+</domain>

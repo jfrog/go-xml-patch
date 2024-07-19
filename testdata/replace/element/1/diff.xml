@@ -1,0 +1,11 @@
+<diff>
+    <replace sel="//interface/mac[@address='52:54:00:31:3d:3e']/..">
+        <interface type="replaced">
+            <mac address="52:54:00:31:3d:3e"/>
+            <source bridge="br-int"/>
+            <virtualport type="openvswitch" />
+            <target dev="dev3"/>
+            <model type="virtio"/>
+        </interface>
+    </replace>
+</diff>
